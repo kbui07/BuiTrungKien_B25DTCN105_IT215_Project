@@ -1,19 +1,12 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
-class CampaignMemberBase(BaseModel):
-    campaign_id: int
+class CampaignMemberCreate(BaseModel):
     user_id: int
+
+
+class CampaignMemberResponse(BaseModel):
+    user_id: int
+    name: str
+    email: str
     role: str
-
-
-class CampaignMemberCreate(CampaignMemberBase):
-    pass
-
-
-class CampaignMemberUpdate(BaseModel):
-    role: str
-
-
-class CampaignMemberResponse(CampaignMemberBase):
-    model_config = ConfigDict(from_attributes=True)

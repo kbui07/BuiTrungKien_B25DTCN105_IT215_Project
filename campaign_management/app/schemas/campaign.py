@@ -1,17 +1,17 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class CampaignBase(BaseModel):
-    name: str
+    name: str = Field(min_length=1, max_length=150)
     description: str | None = None
 
 
 class CampaignCreate(CampaignBase):
-    owner_id: int
+    pass
 
 
 class CampaignUpdate(BaseModel):
-    name: str | None = None
+    name: str | None = Field(default=None, min_length=1, max_length=150)
     description: str | None = None
 
 

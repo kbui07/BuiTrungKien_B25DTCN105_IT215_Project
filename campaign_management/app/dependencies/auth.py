@@ -1,6 +1,6 @@
-from fastapi import Header, Depends, HTTPException
+from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import jwt, JWTError
+from jose import jwt, JWTError, ExpiredSignatureError
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
@@ -29,8 +29,11 @@ def get_current_user(
         if user_id is None:
             raise forbidden("Token không hợp lệ")
 
+    except ExpiredSignatureError:
+        raise forbidden("Token đã hết hạn")
+
     except JWTError:
-        raise forbidden("Token không hợp lệ hoặc đã hết hạn")
+        raise forbidden("Token không hợp lệ")
 
     user = db.query(User).filter(User.id == int(user_id)).first()
 

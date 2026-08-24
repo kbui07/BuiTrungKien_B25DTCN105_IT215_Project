@@ -16,5 +16,5 @@ class Campaign(Base):
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     owner = relationship("User", back_populates="campaigns")
-    members = relationship("CampaignMember", back_populates="campaign")
+    members = relationship("CampaignMember", back_populates="campaign", cascade="all, delete-orphan")
     tasks = relationship("CampaignTask", back_populates="campaign")

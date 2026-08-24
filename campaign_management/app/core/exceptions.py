@@ -1,9 +1,9 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 
 
 def not_found(message: str):
     return HTTPException(
-        status_code=404,
+        status_code=status.HTTP_404_NOT_FOUND,
         detail={
             "status": "error",
             "message": message
@@ -12,7 +12,7 @@ def not_found(message: str):
 
 def bad_request(message: str):
     return HTTPException(
-        status_code=400,
+        status_code=status.HTTP_400_BAD_REQUEST,
         detail={
             "status": "error",
             "message": message
@@ -21,7 +21,7 @@ def bad_request(message: str):
 
 def forbidden(message: str):
     return HTTPException(
-        status_code=403,
+        status_code=status.HTTP_403_FORBIDDEN,
         detail={
             "status": "error",
             "message": message
