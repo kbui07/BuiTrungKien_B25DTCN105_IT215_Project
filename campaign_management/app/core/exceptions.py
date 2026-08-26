@@ -27,3 +27,13 @@ def forbidden(message: str):
             "message": message
         }
     )
+
+
+def too_many_requests(message: str):
+    return HTTPException(
+        status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+        detail={
+            "status": "error",
+            "message": message
+        }
+    )

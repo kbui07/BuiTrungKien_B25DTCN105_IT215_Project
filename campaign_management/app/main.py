@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from app.db.database import Base, engine
 import app.models
-from app.routers import auth, user, campaign
+from app.routers import auth, user, campaign, campaign_task
 
 
 app = FastAPI()
@@ -12,6 +12,7 @@ Base.metadata.create_all(bind=engine)
 app.include_router(auth.router)
 app.include_router(user.router)
 app.include_router(campaign.router)
+app.include_router(campaign_task.router)
 
 
 @app.get("/health")

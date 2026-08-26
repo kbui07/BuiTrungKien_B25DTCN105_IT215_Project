@@ -1,7 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
 from app.db.database import get_db
+from app.core.rate_limit import check_login_rate_limit
+from app.core.exceptions import too_many_requests
 from app.models.user import User
 from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse
 from app.services.auth import hash_password, verify_password, create_access_token
@@ -39,6 +41,15 @@ def register(data: RegisterRequest, db: Session = Depends(get_db)):
         "message": "Đăng ký thành công",
         "user_id": new_user.id
     }
+
+
+router.post("/login")
+def limit_login(data: LoginRequest, request: Request, db: Session = Depends(get_db)):
+
+    ip = request.client.host
+
+    if not check_login_rate_limit(ip):
+        raise too_many_requests("Quá nhiều lần đăng nhập. Vui lòng thử lại sau.")
 
 
 @router.post("/login", response_model=TokenResponse)
