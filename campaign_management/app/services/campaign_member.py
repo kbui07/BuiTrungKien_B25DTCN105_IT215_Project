@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.models.campaign import Campaign
 from app.models.campaign_member import CampaignMember
 from app.models.user import User
-from app.core.exceptions import forbidden
+from app.core.exceptions import forbidden, not_found
 
 
 def check_owner(db: Session, campaign_id: int, current_user: User):
@@ -25,12 +25,12 @@ def add_member(db: Session, campaign_id: int, user_id: int, current_user: User):
     campaign = db.query(Campaign).filter(Campaign.id == campaign_id).first()
 
     if not campaign:
-        raise forbidden("Chiến dịch không tồn tại")
+        raise not_found("Chiến dịch không tồn tại")
 
     user = db.query(User).filter(User.id == user_id).first()
 
     if not user:
-        raise forbidden("Người dùng không tồn tại")
+        raise not_found("Người dùng không tồn tại")
 
     member = db.query(CampaignMember).filter(
             CampaignMember.campaign_id == campaign_id,

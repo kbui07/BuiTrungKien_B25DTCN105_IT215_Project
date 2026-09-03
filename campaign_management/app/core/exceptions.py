@@ -19,6 +19,15 @@ def bad_request(message: str):
         }
     )
 
+def unauthorized(message: str):
+    return HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail={
+            "status": "error",
+            "message": message
+        }
+    )
+
 def forbidden(message: str):
     return HTTPException(
         status_code=status.HTTP_403_FORBIDDEN,
